@@ -6,10 +6,12 @@ import seedu.address.commons.core.UnmodifiableObservableList;
 import seedu.address.commons.util.StringUtil;
 import seedu.address.commons.events.model.AddressBookChangedEvent;
 import seedu.address.commons.core.ComponentManager;
+import seedu.address.model.item.FloatingTask;
+import seedu.address.model.item.ReadOnlyFloatingTask;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.ReadOnlyPerson;
-import seedu.address.model.person.UniquePersonList;
-import seedu.address.model.person.UniquePersonList.PersonNotFoundException;
+import seedu.address.model.person.UniqueFloatingTaskList;
+import seedu.address.model.person.UniqueFloatingTaskList.FloatingTaskNotFoundException;
 
 import java.util.Set;
 import java.util.logging.Logger;
@@ -22,7 +24,7 @@ public class ModelManager extends ComponentManager implements Model {
     private static final Logger logger = LogsCenter.getLogger(ModelManager.class);
 
     private final AddressBook addressBook;
-    private final FilteredList<Person> filteredPersons;
+    private final FilteredList<FloatingTask> filteredFloatingTasks;
 
     /**
      * Initializes a ModelManager with the given AddressBook
@@ -36,7 +38,7 @@ public class ModelManager extends ComponentManager implements Model {
         logger.fine("Initializing with address book: " + src + " and user prefs " + userPrefs);
 
         addressBook = new AddressBook(src);
-        filteredPersons = new FilteredList<>(addressBook.getPersons());
+        filteredFloatingTasks = new FilteredList<>(addressBook.getFloatingTasks());
     }
 
     public ModelManager() {
@@ -45,7 +47,7 @@ public class ModelManager extends ComponentManager implements Model {
 
     public ModelManager(ReadOnlyAddressBook initialData, UserPrefs userPrefs) {
         addressBook = new AddressBook(initialData);
-        filteredPersons = new FilteredList<>(addressBook.getPersons());
+        filteredFloatingTasks = new FilteredList<>(addressBook.getFloatingTasks());
     }
 
     @Override
@@ -65,14 +67,14 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     @Override
-    public synchronized void deletePerson(ReadOnlyPerson target) throws PersonNotFoundException {
-        addressBook.removePerson(target);
+    public synchronized void deleteFloatingTask(ReadOnlyFloatingTask floatingTask) throws FloatingTaskNotFoundException {
+        addressBook.removeFloatingTask(floatingTask);
         indicateAddressBookChanged();
     }
 
     @Override
-    public synchronized void addPerson(Person person) throws UniquePersonList.DuplicatePersonException {
-        addressBook.addPerson(person);
+    public synchronized void addFloatingTask(FloatingTask floatingTask) throws UniqueFloatingTaskList.DuplicateFloatingTaskException {
+        addressBook.addFloatingTask(floatingTask);
         updateFilteredListToShowAll();
         indicateAddressBookChanged();
     }
@@ -80,28 +82,28 @@ public class ModelManager extends ComponentManager implements Model {
     //=========== Filtered Person List Accessors ===============================================================
 
     @Override
-    public UnmodifiableObservableList<ReadOnlyPerson> getFilteredPersonList() {
-        return new UnmodifiableObservableList<>(filteredPersons);
+    public UnmodifiableObservableList<ReadOnlyFloatingTask> getFilteredFloatingTaskList() {
+        return new UnmodifiableObservableList<>(filteredFloatingTasks);
     }
 
     @Override
     public void updateFilteredListToShowAll() {
-        filteredPersons.setPredicate(null);
+        filteredFloatingTasks.setPredicate(null);
     }
 
     @Override
-    public void updateFilteredPersonList(Set<String> keywords){
-        updateFilteredPersonList(new PredicateExpression(new NameQualifier(keywords)));
+    public void updateFilteredFloatingTaskList(Set<String> keywords){
+        updateFilteredFloatingTaskList(new PredicateExpression(new NameQualifier(keywords)));
     }
 
-    private void updateFilteredPersonList(Expression expression) {
-        filteredPersons.setPredicate(expression::satisfies);
+    private void updateFilteredFloatingTaskList(Expression expression) {
+        filteredFloatingTasks.setPredicate(expression::satisfies);
     }
 
     //========== Inner classes/interfaces used for filtering ==================================================
 
     interface Expression {
-        boolean satisfies(ReadOnlyPerson person);
+        boolean satisfies(ReadOnlyFloatingTask person);
         String toString();
     }
 
@@ -114,7 +116,7 @@ public class ModelManager extends ComponentManager implements Model {
         }
 
         @Override
-        public boolean satisfies(ReadOnlyPerson person) {
+        public boolean satisfies(ReadOnlyFloatingTask person) {
             return qualifier.run(person);
         }
 
@@ -125,7 +127,7 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     interface Qualifier {
-        boolean run(ReadOnlyPerson person);
+        boolean run(ReadOnlyFloatingTask person);
         String toString();
     }
 
@@ -137,9 +139,9 @@ public class ModelManager extends ComponentManager implements Model {
         }
 
         @Override
-        public boolean run(ReadOnlyPerson person) {
+        public boolean run(ReadOnlyFloatingTask person) {
             return nameKeyWords.stream()
-                    .filter(keyword -> StringUtil.containsIgnoreCase(person.getName().fullName, keyword))
+                    .filter(keyword -> StringUtil.containsIgnoreCase(person.getName().name, keyword))
                     .findAny()
                     .isPresent();
         }
