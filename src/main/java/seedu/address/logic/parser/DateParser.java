@@ -5,7 +5,7 @@ import java.util.Date;
 /*
  * Parses a string into a Date object
  * Give this a date string without name of task or recurrence interval
- * E.g. 8pm tmr, 7.20am next next wed, 7 July 6:30am, 920 am this sunday
+ * E.g. 8pm tmr, 7.20am next next wed, 7 July 6:30am, 920am this sunday
  * Current limitation: time must be in am or pm, with hour and minutes attached to this string (am/pm)
  * Supports date formats: relative days from today, days of week, month and day
  * Note: events can reuse this. split up string startDate startTime and endDate endTime, and parse each separately
