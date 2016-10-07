@@ -202,7 +202,7 @@ public class DateParser {
                     if (j>=MONTH_START_INDEX && j<=MONTH_END_INDEX) {
                         isMonth = true;
                         monthIntValue = j-3;
-                        if (i-1 < fields.length && fields[i-1].matches("^\\d+$")) {
+                        if (i-1 >= 0 && fields[i-1].matches("^\\d+$")) {
                             day += " " + fields[i-1];
                         } else if (i+1 < fields.length && fields[i+1].matches("^\\d+$")) {
                             day += " " + fields[i+1];
