@@ -84,7 +84,6 @@ public class DateParser {
             // Maybe even add functionality for user to specify year if wanted
         } else if (type.equals("daysOfWeek")) {
             // based on how many "next" user types, go through calendar
-            System.out.println(value);
             int desiredDayOfWeek = 0;
             switch (date) {
                 case "monday": desiredDayOfWeek = Calendar.MONDAY; break;
