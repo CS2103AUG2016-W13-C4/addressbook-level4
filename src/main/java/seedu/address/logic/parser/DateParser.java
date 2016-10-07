@@ -12,7 +12,7 @@ import java.util.Date;
  */
 public class DateParser {
     
-    private static final String[] days = {"tonight", "today",
+    private static final String[] keywords = {"tonight", "today",
                                           "tomorrow", "tmr",  
                                           "january", "february", "march", "april", "may", "june", 
                                           "july", "august", "september", "october", "november", "december",
@@ -69,6 +69,7 @@ public class DateParser {
         return cal.getTime();
     }
     
+    // set correct day for calendar
     private void setDayFields(String date, int value, String type) {
         if (type.equals("tomorrow")) {
             cal.add(Calendar.DATE, 1);
@@ -115,68 +116,45 @@ public class DateParser {
     private void setTimeFields(String time) {
         int hour = 0;
         int minute = 0;
+        boolean isAm;
+        String type = "";
+        String timeDigits = "";
+        
         if (time.contains("pm")) {
-            // check which format user gives time in
-            // 7.30pm, 7:30pm, or 730pm       
-            String timeDigits = time.substring(0, time.indexOf("pm"));
-            // only hour specified
-            if (timeDigits.length()<3) {
-                hour += Integer.parseInt(timeDigits);
-                if (hour!=12) {
-                    hour += 12;
-                }
-            } else {
-                if (timeDigits.contains(".") || timeDigits.contains(":")) {
-                    hour += Integer.parseInt(timeDigits.substring(0, timeDigits.length()-3));
-                    if (hour!=12) {
-                        hour += 12;
-                    }
-                    minute = Integer.parseInt(timeDigits.substring(timeDigits.length()-2));
-                    // 730
-                } else {
-                    String minuteString = timeDigits.substring(timeDigits.length()-2);
-                    String hourString = timeDigits.substring(0, timeDigits.length()-2);
-                    hour += Integer.parseInt(hourString);
-                    if (hour!=12) {
-                        hour += 12;
-                    }
-                    minute = Integer.parseInt(minuteString);
-                }
-            }
+            type = "pm";
+            timeDigits = time.substring(0, time.indexOf("pm"));
+            isAm = false;
         } else if (time.contains("am")) {
-            
-            String timeDigits = time.substring(0, time.indexOf("am"));
-            if (timeDigits.length()<3) {
-                hour += Integer.parseInt(timeDigits);
-                if (hour==12) {
-                    hour = 0;
-                }
-            } else {
-                if (timeDigits.contains(".") || timeDigits.contains(":")) {
-                    hour += Integer.parseInt(timeDigits.substring(0, timeDigits.length()-3));
-                    if (hour==12) {
-                        hour = 0;
-                    }
-                    minute = Integer.parseInt(timeDigits.substring(timeDigits.length()-2));
-                    // 730
-                } else {
-                    String minuteString = timeDigits.substring(timeDigits.length()-2);
-                    String hourString = timeDigits.substring(0, timeDigits.length()-2);
-                    hour += Integer.parseInt(hourString);
-                    if (hour==12) {
-                        hour = 0;
-                    }
-                    minute = Integer.parseInt(minuteString);
-                }
-            }
-        } else {
-            // something wrong
-            // TODO: handle properly
-            System.out.println("ERROR! haha");
+            type = "am";
+            timeDigits = time.substring(0, time.indexOf("am"));
+            isAm = true;
         }
+        
+        if (timeDigits.length()<3) {
+            hour += Integer.parseInt(timeDigits);
+        } else if (timeDigits.contains(".") || timeDigits.contains(":")) {
+            hour += Integer.parseInt(timeDigits.substring(0, timeDigits.length()-3));
+            minute = Integer.parseInt(timeDigits.substring(timeDigits.length()-2));
+        } else {
+            hour += Integer.parseInt(timeDigits.substring(0, timeDigits.length()-2));
+            minute = Integer.parseInt(timeDigits.substring(timeDigits.length()-2));
+        }
+        
+        hour = adjustForTwentyFourHourTime(hour, type);
+        
         cal.set(Calendar.HOUR_OF_DAY, hour);
         cal.set(Calendar.MINUTE, minute);
         cal.set(Calendar.SECOND, 0);
+    }
+    
+    private int adjustForTwentyFourHourTime(int hour, String type) {
+        if (type.equals("am") && hour==12) {
+            return 0;
+        } else if (type.equals("pm") && hour!=12) {
+            return hour+12;
+        }
+        
+        return hour;
     }
     
     private void initialiseTimeFromTargetString() {
@@ -191,8 +169,8 @@ public class DateParser {
     
     private void initialiseDayFromTargetString() {
         for (int i = 0; i < fields.length; i++) {
-            for (int j = 0; j < days.length; j++) {
-                String supportedWord = days[j];
+            for (int j = 0; j < keywords.length; j++) {
+                String supportedWord = keywords[j];
                 String inputWord = fields[i];
                 if (supportedWord.contains(inputWord)) {
                     day = supportedWord;
