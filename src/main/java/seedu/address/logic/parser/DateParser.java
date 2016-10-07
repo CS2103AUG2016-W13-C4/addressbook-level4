@@ -2,7 +2,8 @@ package seedu.address.logic.parser;
 
 import java.util.Calendar;
 import java.util.Date;
-/*
+
+/**
  * Parses a string into a Date object
  * Give this a date string without name of task or recurrence interval
  * E.g. 8pm tmr, 7.20am next next wed, 7 July 6:30am, 920am this sunday
