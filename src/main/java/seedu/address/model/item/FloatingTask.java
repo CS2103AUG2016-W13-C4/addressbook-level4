@@ -8,8 +8,7 @@ public class FloatingTask implements ReadOnlyFloatingTask {
     public static final String VARIABLE_CONNECTOR = ". Rank: ";
     public static final String DEFAULT_PRIORITY_VALUE = "5";
 
-    
-    protected final Name name;
+    protected final Name taskName;
     private final Priority priorityValue;
     
     public FloatingTask(Name taskName) throws IllegalValueException {
@@ -31,13 +30,13 @@ public class FloatingTask implements ReadOnlyFloatingTask {
      */
     public FloatingTask(Name taskName, Priority priorityValue) {
         assert !CollectionUtil.isAnyNull(taskName, priorityValue);
-        this.name = taskName;
+        this.taskName = taskName;
         this.priorityValue = priorityValue;
     }
 
     @Override
     public String toString() {
-        return name + VARIABLE_CONNECTOR + priorityValue;
+        return taskName + VARIABLE_CONNECTOR + priorityValue;
     }
 
     @Override
@@ -47,12 +46,10 @@ public class FloatingTask implements ReadOnlyFloatingTask {
                 && this.priorityValue.equals(((FloatingTask) other).priorityValue)); // state check
     }
 
-    @Override
     public Name getName() {      
-        return name;
+        return taskName;
     }
 
-    @Override
     public Priority getPriorityValue() {
         return priorityValue;
     }  
