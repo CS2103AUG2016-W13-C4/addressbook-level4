@@ -116,18 +116,15 @@ public class DateParser {
     private void setTimeFields(String time) {
         int hour = 0;
         int minute = 0;
-        boolean isAm;
         String type = "";
         String timeDigits = "";
         
         if (time.contains("pm")) {
             type = "pm";
             timeDigits = time.substring(0, time.indexOf("pm"));
-            isAm = false;
         } else if (time.contains("am")) {
             type = "am";
             timeDigits = time.substring(0, time.indexOf("am"));
-            isAm = true;
         }
         
         if (timeDigits.length()<3) {
