@@ -159,6 +159,7 @@ public class DateParser {
             for (String f: fields) {
                 if (f.contains("pm") || (f.contains("am"))) {
                     time = f;
+                    break;
                 }
             }
         }
