@@ -1,11 +1,14 @@
 package seedu.address.model;
 
 import javafx.collections.ObservableList;
+import seedu.address.model.item.DateItem;
 import seedu.address.model.item.FloatingTask;
 import seedu.address.model.item.Name;
 import seedu.address.model.item.Priority;
 import seedu.address.model.item.ReadOnlyFloatingTask;
 import seedu.address.model.item.UniqueFloatingTaskList;
+import seedu.address.model.item.UniqueDateItemList;
+import seedu.address.model.item.UniqueDateItemList.DuplicateDateItemException;
 import seedu.address.model.tag.Tag;
 import seedu.address.model.tag.UniqueTagList;
 
@@ -19,9 +22,11 @@ import java.util.stream.Collectors;
 public class TaskManager implements ReadOnlyFloatingTask, ReadOnlyTaskManager {
 
     private final UniqueFloatingTaskList floatingTasks;
+    private final UniqueDateItemList dateItems;
 
     {
         floatingTasks = new UniqueFloatingTaskList();
+        dateItems = new UniqueDateItemList();
     }
 
     public TaskManager() {}
@@ -84,6 +89,10 @@ public class TaskManager implements ReadOnlyFloatingTask, ReadOnlyTaskManager {
             throw new UniqueFloatingTaskList.FloatingTaskNotFoundException();
         }
     }
+    
+    public void addItem(DateItem item) throws DuplicateDateItemException {
+        dateItems.add(item);
+    }
 
 
 //// util methods
@@ -132,4 +141,5 @@ public class TaskManager implements ReadOnlyFloatingTask, ReadOnlyTaskManager {
         // TODO Auto-generated method stub
         return null;
     }
+    
 }

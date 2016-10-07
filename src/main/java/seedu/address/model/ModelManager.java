@@ -6,8 +6,10 @@ import seedu.address.commons.core.UnmodifiableObservableList;
 import seedu.address.commons.util.StringUtil;
 import seedu.address.commons.events.model.TaskManagerChangedEvent;
 import seedu.address.commons.core.ComponentManager;
+import seedu.address.model.item.DateItem;
 import seedu.address.model.item.FloatingTask;
 import seedu.address.model.item.ReadOnlyFloatingTask;
+import seedu.address.model.item.UniqueDateItemList;
 import seedu.address.model.item.UniqueFloatingTaskList;
 import seedu.address.model.item.UniqueFloatingTaskList.FloatingTaskNotFoundException;
 
@@ -76,6 +78,13 @@ public class ModelManager extends ComponentManager implements Model {
         indicateTaskManagerChanged();
     }
 
+    @Override
+    public synchronized void addDateItem(DateItem item) throws UniqueDateItemList.DuplicateDateItemException {
+        taskManager.addItem(item);
+        updateFilteredListToShowAll();
+        indicateTaskManagerChanged();
+    }
+    
     //=========== Filtered Person List Accessors ===============================================================
 
     @Override
