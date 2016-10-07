@@ -1,25 +1,73 @@
 package seedu.address.model.item;
 
+import java.util.Date;
+
 import seedu.address.commons.exceptions.IllegalValueException;
+import seedu.address.commons.util.CollectionUtil;
 
-public abstract class Task {
-    public static final String NAME_VALIDATION_REGEX = "[\\p{Alnum} ]+";
-    public static final String MESSAGE_NAME_CONSTRAINTS = "Task names should be spaces or alphanumeric characters";
+public class Task extends DateItem {
     
-    protected final String taskName;
+    private final Date deadline;
+    private final RecurrenceRate recurrenceRate;
 
-    public Task(String taskName) throws IllegalValueException {
-        assert taskName != null;
-        if (!isValidName(taskName)) {
-            throw new IllegalValueException(MESSAGE_NAME_CONSTRAINTS);
-        }
-        this.taskName = taskName;
+    public Task(Name taskName, Date deadline) throws IllegalValueException {
+        assert !CollectionUtil.isAnyNull(taskName, deadline);
+  
+        itemName = taskName;
+        this.deadline = deadline;
+        dateToOrderBy = deadline;
+        recurrenceRate = new RecurrenceRate(0);
+        System.out.println(itemName.toString() + "\n" + deadline.toString() + "\n" + recurrenceRate.toString());
     }
     
-    /**
-     * Returns true if a given value is a valid priority value.
+    public Task(Name taskName, Date deadline, RecurrenceRate recurrenceRate) throws IllegalValueException {
+        assert !CollectionUtil.isAnyNull(taskName, deadline);
+  
+        itemName = taskName;
+        this.deadline = deadline;
+        dateToOrderBy = deadline;
+        this.recurrenceRate = recurrenceRate;
+    }
+    
+    /** TODO: Not sure whether we creating superclass ReadOnlyDateItem or creating individual classes
+     * Copy constructor.
+     * @throws IllegalValueException 
      */
-    public static boolean isValidName(String taskName) {
-        return taskName.matches(NAME_VALIDATION_REGEX);
+    /*public Task(ReadOnlyTask source) {
+        this(source.getName(), source.getDeadline());
+    }*/
+    
+    //TODO: Not putting setter methods because I'm assuming that for 'edit', we will be deleting and recreating a new Task
+    
+    //TODO: Not sure how we are using toString() yet, so I'll return a dummy value
+    @Override
+    public String toString() {
+        return deadline.getDate() + " ";
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        return other == this // short circuit if same object
+                || (other instanceof Task // instanceof handles nulls
+                && this.itemName.equals(((Task) other).getName()) // state check
+                && this.deadline.equals(((Task) other).deadline) 
+                && this.dateToOrderBy.equals(((Task) other).getDateToOrderBy())
+                && this.recurrenceRate.equals(((Task) other).getRecurrenceRate()));
+                
+                
+    }
+
+    public Date getDeadline() {
+        return deadline;
+    }
+    
+    public RecurrenceRate getRecurrenceRate() {
+        return recurrenceRate;
+    }
+
+    // TODO Update this method
+    @Override
+    public int compareTo(DateItem o) {
+        return 0;
     }
 }
