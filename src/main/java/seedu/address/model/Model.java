@@ -1,8 +1,10 @@
 package seedu.address.model;
 
 import seedu.address.commons.core.UnmodifiableObservableList;
+import seedu.address.model.item.DateItem;
 import seedu.address.model.item.FloatingTask;
 import seedu.address.model.item.ReadOnlyFloatingTask;
+import seedu.address.model.item.UniqueDateItemList;
 import seedu.address.model.item.UniqueFloatingTaskList;
 
 import java.util.Set;
@@ -31,5 +33,7 @@ public interface Model {
 
     /** Updates the filter of the filtered floating task list to filter by the given keywords*/
     void updateFilteredFloatingTaskList(Set<String> keywords);
+
+    void addDateItem(DateItem toAdd) throws UniqueDateItemList.DuplicateDateItemException;
 
 }

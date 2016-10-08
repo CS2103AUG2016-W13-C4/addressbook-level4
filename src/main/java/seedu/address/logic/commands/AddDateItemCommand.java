@@ -1,15 +1,16 @@
 package seedu.address.logic.commands;
 
+import java.util.Calendar;
+
 import seedu.address.commons.exceptions.IllegalValueException;
-import seedu.address.model.item.FloatingTask;
+import seedu.address.model.item.DateItem;
 import seedu.address.model.item.Name;
-import seedu.address.model.item.Priority;
+import seedu.address.model.item.RecurrenceRate;
+import seedu.address.model.item.Task;
+import seedu.address.model.item.UniqueDateItemList.DuplicateDateItemException;
 import seedu.address.model.item.UniqueFloatingTaskList.DuplicateFloatingTaskException;
 
-/**
- * Adds a person to the address book.
- */
-public class AddCommand extends Command {
+public class AddDateItemCommand extends Command {
 
     public static final String COMMAND_WORD = "add";
 
@@ -18,35 +19,35 @@ public class AddCommand extends Command {
             + "Parameters: NAME [rank PRIORITY_VALUE]\n"
             + "Example: " + COMMAND_WORD
             + " read Harry Potter and the Akshay rank 1";
-    
-    public static final String TOOL_TIP = "add NAME [rank PRIORITY]";
-    
-    public static final String MESSAGE_DUPLICATE_FLOATING_TASK = "This task already exists in the task manager";
 
     public static final String MESSAGE_SUCCESS = "New item added: %1$s";
 
-    private final FloatingTask toAdd;
+    //TODO: Refactoring needed here
+    private DateItem toAdd;
 
     /**
      * Convenience constructor using raw values.
      *
      * @throws IllegalValueException if any of the raw values are invalid
      */
-    public AddCommand(String name) throws IllegalValueException {
-        this.toAdd = new FloatingTask(new Name(name));
+    public AddDateItemCommand(String name, String date) throws IllegalValueException {
+        //TODO: Parse Date
+        this.toAdd = new Task(new Name(name), Calendar.getInstance().getTime());
     }
     
-    public AddCommand(String name, String priorityValue) throws IllegalValueException {
-       this.toAdd = new FloatingTask(new Name(name), new Priority(priorityValue));
+    public AddDateItemCommand(String name, String date, String recurrenceRate) throws IllegalValueException {
+        //TODO: Parse Date
+       this.toAdd = new Task(new Name(name), Calendar.getInstance().getTime(), new RecurrenceRate(Integer.parseInt(recurrenceRate)));
     }
 
     @Override
     public CommandResult execute() {
         assert model != null;
         try {
-            model.addFloatingTask(toAdd);
-        } catch (DuplicateFloatingTaskException e) {
-            return new CommandResult(MESSAGE_DUPLICATE_FLOATING_TASK);
+            model.addDateItem(toAdd);
+        } catch (DuplicateDateItemException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
         return new CommandResult(String.format(MESSAGE_SUCCESS, toAdd));
     }

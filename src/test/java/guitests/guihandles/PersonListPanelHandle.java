@@ -103,6 +103,7 @@ public class PersonListPanelHandle extends GuiHandle {
     public FloatingTaskCardHandle navigateToFloatingTask(String name) {
         guiRobot.sleep(500); //Allow a bit of time for the list to be updated
         final Optional<ReadOnlyFloatingTask> person = getListView().getItems().stream().filter(p -> p.getName().name.equals(name)).findAny();
+
         if (!person.isPresent()) {
             throw new IllegalStateException("Name not found: " + name);
         }

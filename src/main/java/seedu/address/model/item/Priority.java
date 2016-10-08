@@ -11,7 +11,7 @@ public class Priority {
     /**
      * Validates given priority value.
      *
-     * @throws IllegalValueException if given name string is invalid.
+     * @throws IllegalValueException if given value is invalid.
      */
     public Priority(String priorityValue) throws IllegalValueException {
         assert priorityValue != null;
