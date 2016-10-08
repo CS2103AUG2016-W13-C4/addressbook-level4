@@ -4,7 +4,7 @@ import seedu.address.commons.exceptions.IllegalValueException;
 
 public class RecurrenceRate {
     
-    public static final String MESSAGE_VALUE_CONSTRAINTS = "Recurrence rate should be more than 0 days";
+    public static final String MESSAGE_VALUE_CONSTRAINTS = "Recurrence rate should be more than or equals to 0 days";
     
     public final Integer recurrenceRate;
 
@@ -14,9 +14,9 @@ public class RecurrenceRate {
      * @throws IllegalValueException if given recurrence rate is invalid.
      */
     public RecurrenceRate(Integer recurrenceRate) throws IllegalValueException {
-        /*if (!isValidValue(recurrenceRate)) {
+        if (!isValidValue(recurrenceRate)) {
             throw new IllegalValueException(MESSAGE_VALUE_CONSTRAINTS);
-        }*/
+        }
         this.recurrenceRate = recurrenceRate;
     }
 
@@ -24,7 +24,7 @@ public class RecurrenceRate {
      * Returns true if a given value is a valid RecurrenceRate value.
      */
     public static boolean isValidValue(Integer recurrenceRate) {
-        return recurrenceRate > 0;
+        return recurrenceRate >= 0;
     }
     
 
@@ -42,6 +42,6 @@ public class RecurrenceRate {
 
     @Override
     public int hashCode() {
-        return ((Integer) recurrenceRate).hashCode();
+        return recurrenceRate.hashCode();
     }
 }

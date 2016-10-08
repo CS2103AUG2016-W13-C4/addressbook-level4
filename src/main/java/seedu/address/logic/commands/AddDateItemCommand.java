@@ -8,7 +8,6 @@ import seedu.address.model.item.Name;
 import seedu.address.model.item.RecurrenceRate;
 import seedu.address.model.item.Task;
 import seedu.address.model.item.UniqueDateItemList.DuplicateDateItemException;
-import seedu.address.model.item.UniqueFloatingTaskList.DuplicateFloatingTaskException;
 
 public class AddDateItemCommand extends Command {
 
@@ -32,6 +31,7 @@ public class AddDateItemCommand extends Command {
      */
     public AddDateItemCommand(String name, String date) throws IllegalValueException {
         //TODO: Parse Date
+        
         System.out.println(name + ";" + date);
         this.toAdd = new Task(new Name(name), Calendar.getInstance().getTime());
     }

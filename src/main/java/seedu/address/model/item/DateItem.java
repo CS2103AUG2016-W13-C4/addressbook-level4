@@ -9,8 +9,12 @@ public abstract class DateItem implements Comparable<DateItem> {
     /**
      * Orders the Date objects in ascending order  
      */
-    public int compareTo(Date otherDate) {
-        return dateToOrderBy.compareTo(otherDate);
+    @Override
+    public int compareTo(DateItem otherDate) {
+        if (dateToOrderBy.equals(otherDate.dateToOrderBy)){
+            return itemName.name.compareTo(otherDate.itemName.name);
+        }
+        return dateToOrderBy.compareTo(otherDate.dateToOrderBy);
     }
     
     public Name getName() {      

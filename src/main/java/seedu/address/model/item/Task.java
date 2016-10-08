@@ -29,7 +29,7 @@ public class Task extends DateItem {
         this.recurrenceRate = recurrenceRate;
     }
     
-    /** TODO: Not sure whether we creating superclass ReadOnlyDateItem or creating individual classes
+    /** 
      * Copy constructor.
      * @throws IllegalValueException 
      */
@@ -42,7 +42,7 @@ public class Task extends DateItem {
     //TODO: Not sure how we are using toString() yet, so I'll return a dummy value
     @Override
     public String toString() {
-        return deadline.getDate() + " ";
+        return itemName.name + ", by " + deadline.getDate();
     }
 
     @Override

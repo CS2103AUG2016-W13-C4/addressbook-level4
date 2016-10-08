@@ -31,8 +31,9 @@ public class Parser {
                     + "(?:[r][a][n][k] +(?<priorityValue>\\d+))?$)");
     
     //TODO: Parser not fully functioning: case: eat bingsu by myself by 31 Sep (i.e repeat by)
-    private static final Pattern TASK_ARGS_FORMAT = Pattern.compile("(?i:(?<name>.*))(?:by +(?<date>[^ ]*)(?: *(repeat every +(?<interval>.*)))?)$");
-
+    private static final Pattern TASK_ARGS_FORMAT = Pattern.compile("(?i:(?<name>.*))(?:by +((?<deadline1>.*)(?= repeat every +(?<interval>.*))|(?<deadline2>.*)))");
+            //Pattern.compile("(?i:(?<name>.*))(?:by +(?<date>[^ ]*)(?: *(repeat every +(?<interval>.*)))?)$");
+    
     public Parser() {}
 
     /**
@@ -96,13 +97,13 @@ public class Parser {
                 if (taskMatcher.group("interval") != null) {
                     return new AddDateItemCommand(
                             taskMatcher.group("name"),
-                            taskMatcher.group("date"),
+                            taskMatcher.group("deadline1"),
                             taskMatcher.group("interval"));
                 }
                 else {
                     return new AddDateItemCommand(
                             taskMatcher.group("name"),
-                            taskMatcher.group("date"));
+                            taskMatcher.group("deadline2"));
                 }
             } catch (IllegalValueException ive) {
                 return new IncorrectCommand(ive.getMessage());
