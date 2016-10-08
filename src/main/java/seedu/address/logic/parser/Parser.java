@@ -31,9 +31,7 @@ public class Parser {
                     + "(?:[r][a][n][k] +(?<priorityValue>\\d+))?$)");
     
     //TODO: Parser not fully functioning: case: eat bingsu by myself by 31 Sep (i.e repeat by)
-    private static final Pattern TASK_ARGS_FORMAT = 
-            Pattern.compile("(?i:(?<name>.*?)(?:[b][y] +(?<date>.*?))"
-                    + "(?:[r][e][p][e][a][t] [e][v][e][r][y] +(?<interval>.*?))?)");
+    private static final Pattern TASK_ARGS_FORMAT = Pattern.compile("(?i:(?<name>.*))(?:by +(?<date>[^ ]*)(?: *(repeat every +(?<interval>.*)))?)$");
 
     public Parser() {}
 

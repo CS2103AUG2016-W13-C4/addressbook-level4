@@ -32,11 +32,13 @@ public class AddDateItemCommand extends Command {
      */
     public AddDateItemCommand(String name, String date) throws IllegalValueException {
         //TODO: Parse Date
+        System.out.println(name + ";" + date);
         this.toAdd = new Task(new Name(name), Calendar.getInstance().getTime());
     }
     
     public AddDateItemCommand(String name, String date, String recurrenceRate) throws IllegalValueException {
         //TODO: Parse Date
+        System.out.println(name + ";" + date + ";" + recurrenceRate);
        this.toAdd = new Task(new Name(name), Calendar.getInstance().getTime(), new RecurrenceRate(Integer.parseInt(recurrenceRate)));
     }
 
