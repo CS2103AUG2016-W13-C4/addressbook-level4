@@ -29,7 +29,11 @@ public class Parser {
     private static final Pattern FLOATING_TASK_ARGS_FORMAT = // '/' forward slashes are reserved for delimiter prefixes
             Pattern.compile("(?i:(?<name>.*?)"
                     + "(?:[r][a][n][k] +(?<priorityValue>\\d+))?$)");
-
+    
+    //TODO: Parser not fully functioning: case: eat bingsu by myself by 31 Sep (i.e repeat by)
+    private static final Pattern TASK_ARGS_FORMAT = Pattern.compile("(?i:(?<name>.*))(?:by +((?<deadline1>.*)(?= repeat every +(?<interval>.*))|(?<deadline2>.*)))");
+            //Pattern.compile("(?i:(?<name>.*))(?:by +(?<date>[^ ]*)(?: *(repeat every +(?<interval>.*)))?)$");
+    
     public Parser() {}
 
     /**
@@ -84,22 +88,41 @@ public class Parser {
      * @return the prepared command
      */
     private Command prepareAdd(String args){
-        final Matcher matcher = FLOATING_TASK_ARGS_FORMAT.matcher(args.trim());
+        //TODO: Sure must refactor
+        final Matcher floatingTaskMatcher = FLOATING_TASK_ARGS_FORMAT.matcher(args.trim());
+        final Matcher taskMatcher = TASK_ARGS_FORMAT.matcher(args.trim());
         // Validate arg string format
-        if (!matcher.matches()) {
+        if (taskMatcher.matches()) {
+            try {
+                if (taskMatcher.group("interval") != null) {
+                    return new AddDateItemCommand(
+                            taskMatcher.group("name"),
+                            taskMatcher.group("deadline1"),
+                            taskMatcher.group("interval"));
+                }
+                else {
+                    return new AddDateItemCommand(
+                            taskMatcher.group("name"),
+                            taskMatcher.group("deadline2"));
+                }
+            } catch (IllegalValueException ive) {
+                return new IncorrectCommand(ive.getMessage());
+            }
+        } else if (floatingTaskMatcher.matches()) {
+            try {
+                if (floatingTaskMatcher.group("priorityValue") != null) {
+                    return new AddCommand(
+                            floatingTaskMatcher.group("name"),
+                            floatingTaskMatcher.group("priorityValue"));
+                }
+                else {
+                    return new AddCommand(floatingTaskMatcher.group("name"));
+                }
+            } catch (IllegalValueException ive) {
+                return new IncorrectCommand(ive.getMessage());
+            }
+        }  else {
             return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
-        }
-        try {
-            if (matcher.group("priorityValue") != null) {
-                return new AddCommand(
-                        matcher.group("name"),
-                        matcher.group("priorityValue"));
-            }
-            else {
-                return new AddCommand(matcher.group("name"));
-            }
-        } catch (IllegalValueException ive) {
-            return new IncorrectCommand(ive.getMessage());
         }
     }
 

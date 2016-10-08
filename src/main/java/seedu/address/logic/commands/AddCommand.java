@@ -13,6 +13,7 @@ public class AddCommand extends Command {
 
     public static final String COMMAND_WORD = "add";
 
+    //TODO: Update documentation
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds an item to To-Do List. "
             + "Parameters: NAME [rank PRIORITY_VALUE]\n"
             + "Example: " + COMMAND_WORD
